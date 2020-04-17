@@ -7,14 +7,14 @@ using namespace std;
 
 // TODO: Implement all methods
 template <typename T>
-class stack {
+class Stack {
 	T* data;
 	int top;
 	int capacity;
 
 public:
-	stack(in	t size = MAX);
-	~stack();   		
+	Stack(int size = MAX);
+	~Stack();   		
 
 	void push(T);
 	void pop();
