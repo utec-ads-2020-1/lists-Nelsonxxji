@@ -6,7 +6,7 @@ using namespace std;
 
 #define MAX 1000
 
-// TODO: Implement all methods
+// TODO: Handle Resize
 template <typename T>
 class Queue
 {
