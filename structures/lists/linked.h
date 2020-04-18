@@ -1,36 +1,41 @@
 #ifndef LINKED_H
 #define LINKED_H
 
+#include <iostream>
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
 
+using namespace std;
+
 // TODO: Implement all methods
 template <typename T>
-class LinkedList : public List<T> {
-    public:
-        LinkedList() : List<T>() {}
+class LinkedList : public List<T>
+{
+public:
+    LinkedList() : List<T>() {}
 
-        T front();
-        T back();
-        void push_front(T);
-        void push_back(T);
-        void pop_front();
-        void pop_back();
-        T operator[](int);
-        bool empty();
-        int size();
-        void clear();
-        void sort();
-        void reverse();
+    T front();
+    T back();
+    void push_front(T);
+    void push_back(T);
+    void pop_front();
+    void pop_back();
+    T operator[](int);
+    bool empty();
+    int size();
+    void clear();
+    void sort();
+    void reverse();
 
-        BidirectionalIterator<T> begin();
-	    BidirectionalIterator<T> end();
+    BidirectionalIterator<T> begin();
+    BidirectionalIterator<T> end();
 
-        string name() {
-            return "Linked List";
-        }
+    string name()
+    {
+        return "Linked List";
+    }
 
-        /**
+    /**
          * Merges x into the list by transferring all of its elements at their respective 
          * ordered positions into the container (both containers shall already be ordered).
          * 
@@ -40,66 +45,104 @@ class LinkedList : public List<T> {
          * any element: they are transferred, no matter whether x is an lvalue or an rvalue, 
          * or whether the value_type supports move-construction or not.
         */
-        void merge(LinkedList<T>&);
+    void merge(LinkedList<T> &);
 };
 
 template <typename T>
-T LinkedList<T>::front(){
+T LinkedList<T>::front()
+{
     return 1;
 }
 
 template <typename T>
-T LinkedList<T>::back(){
+T LinkedList<T>::back()
+{
     return 1;
 }
 
 template <typename T>
-void LinkedList<T>::push_front(T data){
-    return;
+void LinkedList<T>::push_front(T data)
+{
+    Node<T> *newNode = new Node<T>(data);
+    if (this->empty())
+    {
+        this->head = newNode;
+        this->tail = newNode;
+    }
+    else
+    {
+        this->head->prev = newNode;
+        newNode->next = this->head;
+        this->head = newNode;
+    }
+    this->nodes++;
 }
 
 template <typename T>
-void LinkedList<T>::push_back(T data){
-    return;
+void LinkedList<T>::push_back(T data)
+{
+    Node<T> *newNode = new Node<T>(data);
+    if (this->empty())
+    {
+        this->head = newNode;
+        this->tail = newNode;
+    }
+    else
+    {
+        this->tail->next = newNode;
+        newNode->prev = this->tail;
+        this->tail = newNode;
+    }
+    this->nodes++;
 }
 
 template <typename T>
-void LinkedList<T>::pop_front(){
-
+void LinkedList<T>::pop_front()
+{
 }
 
 template <typename T>
-void LinkedList<T>::pop_back(){
-    
+void LinkedList<T>::pop_back()
+{
 }
 
 template <typename T>
-T LinkedList<T>::operator[](int index){
+T LinkedList<T>::operator[](int index)
+{
     return 1;
 }
 
 template <typename T>
-bool LinkedList<T>::empty(){
-    return true;
+bool LinkedList<T>::empty()
+{
+    if (!this->head)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 template <typename T>
-int LinkedList<T>::size(){
+int LinkedList<T>::size()
+{
     return 1;
 }
 
 template <typename T>
-void LinkedList<T>::clear(){
-
+void LinkedList<T>::clear()
+{
 }
 
 template <typename T>
-void LinkedList<T>::sort(){
-
+void LinkedList<T>::sort()
+{
 }
 
 template <typename T>
-void LinkedList<T>::reverse(){
-
+void LinkedList<T>::reverse()
+{
 }
 #endif
