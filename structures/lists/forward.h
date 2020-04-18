@@ -177,7 +177,7 @@ void ForwardList<T>::pop_back()
 template <typename T>
 T ForwardList<T>::operator[](int index)
 {
-    if (index == 0 && this->head)
+    if (index == 0 && !this->empty())
     {
         return this->head->data;
     }
