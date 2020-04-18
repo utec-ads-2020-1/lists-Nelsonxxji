@@ -1,6 +1,7 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <string>
 #include "node.h"
 
 // TODO: Implement all methods
@@ -27,7 +28,12 @@ class List {
         virtual void clear() = 0;
         virtual void sort() = 0;
         virtual void reverse() = 0;
-        virtual string name() = 0;
+        virtual std::string name() = 0;
 };
+
+template <typename T>
+List<T>::~List(){
+    
+}
 
 #endif

@@ -7,7 +7,15 @@ struct Node {
     Node<T>* next;
     Node<T>* prev;
 
+    Node(T data)
+    {
+        this->data = data;
+        this->next = nullptr;
+        this->prev = nullptr;
+    }
+
     void killSelf();
 };
+
 
 #endif
