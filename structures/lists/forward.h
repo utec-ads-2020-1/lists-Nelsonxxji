@@ -93,13 +93,16 @@ template <typename T>
 void ForwardList<T>::push_front(T data)
 {
     Node<T> *newNode = new Node<T>(data);
-    newNode->next = this->head;
-    this->head = newNode;
     if (this->empty())
     {
+        this->head = newNode;
         this->tail = newNode;
     }
-    //delete newNode;
+    else
+    {
+        newNode->next = this->head;
+        this->head = newNode;
+    }
     this->nodes++;
 }
 
@@ -109,7 +112,6 @@ void ForwardList<T>::push_back(T data)
     Node<T> *newNode = new Node<T>(data);
     if (this->empty())
     {
-        newNode->next = this->head;
         this->head = newNode;
         this->tail = newNode;
     }
@@ -118,7 +120,6 @@ void ForwardList<T>::push_back(T data)
         this->tail->next = newNode;
         this->tail = newNode;
     }
-    //delete newNode;
     this->nodes++;
 }
 
@@ -240,10 +241,12 @@ void ForwardList<T>::clear()
 template <typename T>
 void ForwardList<T>::sort()
 {
-    if(this->empty() || this->nodes==1){
+    if (this->empty() || this->nodes == 1)
+    {
         return;
-    } else{
-
+    }
+    else
+    {
     }
 }
 
