@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// TODO: Implement all methods
+// TODO: Implement Sort
 template <typename T>
 class ForwardList : public List<T>
 {
