@@ -43,4 +43,63 @@ class LinkedList : public List<T> {
         void merge(LinkedList<T>&);
 };
 
+template <typename T>
+T LinkedList<T>::front(){
+    return 1;
+}
+
+template <typename T>
+T LinkedList<T>::back(){
+    return 1;
+}
+
+template <typename T>
+void LinkedList<T>::push_front(T data){
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::push_back(T data){
+    return;
+}
+
+template <typename T>
+void LinkedList<T>::pop_front(){
+
+}
+
+template <typename T>
+void LinkedList<T>::pop_back(){
+    
+}
+
+template <typename T>
+T LinkedList<T>::operator[](int index){
+    return 1;
+}
+
+template <typename T>
+bool LinkedList<T>::empty(){
+    return true;
+}
+
+template <typename T>
+int LinkedList<T>::size(){
+    return 1;
+}
+
+template <typename T>
+void LinkedList<T>::clear(){
+
+}
+
+template <typename T>
+void LinkedList<T>::sort(){
+
+}
+
+template <typename T>
+void LinkedList<T>::reverse(){
+
+}
 #endif
