@@ -177,7 +177,7 @@ void ForwardList<T>::pop_back()
 template <typename T>
 T ForwardList<T>::operator[](int index)
 {
-    if (index == 0)
+    if (index == 0 && this->head)
     {
         return this->head->data;
     }
@@ -228,12 +228,13 @@ void ForwardList<T>::clear()
 {
     Node<T> *temp = new Node<T>(0);
     temp = this->head;
-    while (temp)
+    while (this->head)
     {
-        temp->data = 0;
-        temp = temp->next;
+        this->head = temp->next;
+        temp->killSelf();
+        temp = this->head;
     }
-    //delete temp;
+    this->nodes = 0;
 }
 
 template <typename T>

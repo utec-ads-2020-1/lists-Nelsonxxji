@@ -17,5 +17,9 @@ struct Node {
     void killSelf();
 };
 
+template <typename T>
+void Node<T>::killSelf(){
+    delete this;
+}
 
 #endif
