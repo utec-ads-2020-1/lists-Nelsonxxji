@@ -6,7 +6,7 @@
 
 using namespace std;
 
-// TODO: Implement all methods
+// TODO: Implement Sort
 template <typename T>
 class CircularLinkedList : public List<T>
 {
@@ -161,19 +161,76 @@ void CircularLinkedList<T>::pop_front()
 template <typename T>
 void CircularLinkedList<T>::pop_back()
 {
-    return;
+    try
+    {
+        if (this->empty())
+        {
+            throw "Error CircularLinkedList::pop_back(): List is empty";
+        }
+        else
+        {
+            Node<T> *temp(0);
+            temp = this->tail->prev;
+            delete this->tail;
+            temp->next = this->head;
+            this->head->prev = temp;
+            this->tail = temp;
+            --this->nodes;
+        }
+    }
+    catch (const char *msg)
+    {
+        cerr << msg << endl;
+    }
 }
 
 template <typename T>
 T CircularLinkedList<T>::operator[](int index)
 {
-    return 1;
+    if (index == 0 && !this->empty())
+    {
+        return this->head->data;
+    }
+    else if (index == this->nodes - 1)
+    {
+        return this->tail->data;
+    }
+    else if (index >= this->nodes)
+    {
+        cerr << "Error CircularLinkedList::[](): List index is out of range" << endl;
+    }
+    else
+    {
+        Node<T> *temp(0);
+        if (index <= (this->nodes - 1) / 2)
+        {
+            int tempIndex = 0;
+            temp = this->head;
+            while (tempIndex != index)
+            {
+                temp = temp->next;
+                ++tempIndex;
+            }
+        }
+        else
+        {
+            int tempIndex = this->nodes - 1;
+            temp = this->tail;
+            while (tempIndex != index)
+            {
+                temp = temp->prev;
+                --tempIndex;
+            }
+        }
+        return temp->data;
+    }
 }
+
 
 template <typename T>
 bool CircularLinkedList<T>::empty()
 {
-    if (!this->head)
+    if (this->nodes == 0)
     {
         return true;
     }
@@ -192,7 +249,15 @@ int CircularLinkedList<T>::size()
 template <typename T>
 void CircularLinkedList<T>::clear()
 {
-    return;
+    Node<T> *temp(0);
+    temp = this->head;
+    while (this->nodes)
+    {
+        this->head = temp->next;
+        temp->killSelf();
+        temp = this->head;
+        --this->nodes;
+    }
 }
 
 template <typename T>
@@ -204,6 +269,44 @@ void CircularLinkedList<T>::sort()
 template <typename T>
 void CircularLinkedList<T>::reverse()
 {
-    return;
+    try
+    {
+        if (this->empty())
+        {
+            throw "Error CircularLinkedList::reverse(): List is empty";
+        }
+        else if (this->nodes == 1)
+        {
+            return;
+        }
+        else
+        {
+            Node<T> *temp1(0);
+            Node<T> *temp2(0);
+            Node<T> *temp3(0);
+
+            temp3 = this->head;
+
+            temp1 = this->head;
+            temp1->prev = temp1->next;
+            temp1->next = this->tail;
+            temp1 = temp1->prev;
+            while (temp1 != this->tail)
+            {
+                temp2 = temp1->prev;
+                temp1->prev = temp1->next;
+                temp1->next = temp2;
+                temp1 = temp1->prev;
+            }
+            temp1->next = temp1->prev;
+            temp1->prev = temp3;
+            this->head = temp1;
+            this->tail = temp3;
+        }
+    }
+    catch (const char *msg)
+    {
+        cerr << msg << endl;
+    }
 }
 #endif
