@@ -35,11 +35,12 @@ template <typename T>
 List<T>::~List(){
     Node<T> *temp = new Node<T>(0);
     temp = this->head;
-    while (this->head)
+    while (this->nodes)
     {
         this->head = temp->next;
         temp->killSelf();
         temp = this->head;
+        --this->nodes;
     }
     delete this->head, this->tail;
 }
