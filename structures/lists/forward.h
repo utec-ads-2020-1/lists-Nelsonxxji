@@ -274,6 +274,7 @@ void ForwardList<T>::reverse()
             temp = this->head;
             this->head = this->tail;
             this->tail = temp;
+            this->tail->next = nullptr;
         }
     }
     catch (const char *msg)
