@@ -138,7 +138,7 @@ void ForwardList<T>::pop_front()
             temp = this->head->next;
             delete this->head;
             this->head = temp;
-            //delete temp;
+            --this->nodes;
         }
     }
     catch (const char *msg)
@@ -167,6 +167,7 @@ void ForwardList<T>::pop_back()
             temp->next = nullptr;
             delete this->tail;
             this->tail = temp;
+            --this->nodes;
         }
     }
     catch (const char *msg)
@@ -201,7 +202,6 @@ T ForwardList<T>::operator[](int index)
             ++tempIndex;
         }
         return temp->data;
-        //delete temp;
     }
 }
 
