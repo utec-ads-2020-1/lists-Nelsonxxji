@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// TODO: Implement all methods
+// TODO: Implement Sort
 template <typename T>
 class LinkedList : public List<T>
 {
@@ -51,13 +51,41 @@ public:
 template <typename T>
 T LinkedList<T>::front()
 {
-    return 1;
+    try
+    {
+        if (this->empty())
+        {
+            throw "Error LinkedList::front(): List is empty";
+        }
+        else
+        {
+            return this->head->data;
+        }
+    }
+    catch (const char *msg)
+    {
+        cerr << msg << endl;
+    }
 }
 
 template <typename T>
 T LinkedList<T>::back()
 {
-    return 1;
+    try
+    {
+        if (this->empty())
+        {
+            throw "Error LinkedList::back(): List is empty";
+        }
+        else
+        {
+            return this->tail->data;
+        }
+    }
+    catch (const char *msg)
+    {
+        cerr << msg << endl;
+    }
 }
 
 template <typename T>
@@ -214,7 +242,44 @@ void LinkedList<T>::sort()
 template <typename T>
 void LinkedList<T>::reverse()
 {
-    Node<T>* temp(0);
-    
+    try
+    {
+        if (this->empty())
+        {
+            throw "Error LinkedList::reverse(): List is empty";
+        }
+        else if (this->nodes == 1)
+        {
+            return;
+        }
+        else
+        {
+            Node<T> *temp1(0);
+            Node<T> *temp2(0);
+            Node<T> *temp3(0);
+
+            temp3 = this->head;
+
+            temp1 = this->head;
+            temp1->prev = temp1->next;
+            temp1->next = nullptr;
+            temp1 = temp1->prev;
+            while (temp1 != this->tail)
+            {
+                temp2 = temp1->prev;
+                temp1->prev = temp1->next;
+                temp1->next = temp2;
+                temp1 = temp1->prev;
+            }
+            temp1->next = temp1->prev;
+            temp1->prev = nullptr;
+            this->head = temp1;
+            this->tail = temp3;
+        }
+    }
+    catch (const char *msg)
+    {
+        cerr << msg << endl;
+    }
 }
 #endif
