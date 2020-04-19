@@ -33,7 +33,7 @@ class List {
 
 template <typename T>
 List<T>::~List(){
-    Node<T> *temp = new Node<T>(0);
+    Node<T> *temp(0);
     temp = this->head;
     while (this->nodes)
     {

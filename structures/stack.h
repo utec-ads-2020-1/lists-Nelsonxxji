@@ -44,6 +44,14 @@ template <typename T>
 void Stack<T>::push(T data)
 {
 	++this->top;
+	if (top > this->capacity - 1)
+	{
+		this->capacity *= 2;
+		T *newQueue = new T(capacity);
+		copy(this->data, &this->data[capacity - 1], newQueue);
+		delete this->data;
+		this->data = newQueue;
+	}
 	this->data[top] = data;
 }
 
