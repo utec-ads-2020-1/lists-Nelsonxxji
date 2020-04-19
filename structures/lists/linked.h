@@ -99,6 +99,24 @@ void LinkedList<T>::push_back(T data)
 template <typename T>
 void LinkedList<T>::pop_front()
 {
+    try
+    {
+        if (this->empty())
+        {
+            throw "Error ForwardList::pop_front(): List is empty";
+        }
+        else
+        {
+            Node<T> *temp(0);
+            temp = this->head->next;
+            delete this->head;
+            this->head = temp;
+        }
+    }
+    catch (const char *msg)
+    {
+        cerr << msg << endl;
+    }
 }
 
 template <typename T>
