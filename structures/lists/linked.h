@@ -111,6 +111,7 @@ void LinkedList<T>::pop_front()
             temp = this->head->next;
             delete this->head;
             this->head = temp;
+            --this->nodes;
         }
     }
     catch (const char *msg)
@@ -122,12 +123,54 @@ void LinkedList<T>::pop_front()
 template <typename T>
 void LinkedList<T>::pop_back()
 {
+    Node<T> *temp(0);
+    temp = this->tail->prev;
+    delete this->tail;
+    temp->next = nullptr;
+    this->tail = temp;
+    --this->nodes;
 }
 
 template <typename T>
 T LinkedList<T>::operator[](int index)
 {
-    return 1;
+    if (index == 0 && !this->empty())
+    {
+        return this->head->data;
+    }
+    else if (index == this->nodes - 1)
+    {
+        return this->tail->data;
+    }
+    else if (index >= this->nodes)
+    {
+        cerr << "Error LinkedList::[](): List index is out of range" << endl;
+    }
+    else
+    {
+        Node<T> *temp(0);
+        if (index <= (this->nodes - 1) / 2)
+        {
+            int tempIndex = 0;
+            temp = this->head;
+            while (tempIndex != index)
+            {
+                temp = temp->next;
+                ++tempIndex;
+            }
+        }
+        else
+        {
+            int tempIndex = this->nodes - 1;
+            temp = this->tail;
+            while (tempIndex != index)
+            {
+                temp = temp->prev;
+                --tempIndex;
+            }
+        }
+        return temp->data;
+    }
 }
 
 template <typename T>
@@ -146,12 +189,21 @@ bool LinkedList<T>::empty()
 template <typename T>
 int LinkedList<T>::size()
 {
-    return 1;
+    return this->nodes;
 }
 
 template <typename T>
 void LinkedList<T>::clear()
 {
+    Node<T> *temp(0);
+    temp = this->head;
+    while (this->head)
+    {
+        this->head = temp->next;
+        temp->killSelf();
+        temp = this->head;
+    }
+    this->nodes = 0;
 }
 
 template <typename T>
@@ -162,5 +214,7 @@ void LinkedList<T>::sort()
 template <typename T>
 void LinkedList<T>::reverse()
 {
+    Node<T>* temp(0);
+    
 }
 #endif
