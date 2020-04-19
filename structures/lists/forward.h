@@ -135,9 +135,9 @@ void ForwardList<T>::pop_front()
         else
         {
             Node<T> *temp(0);
-            temp->next = this->head->next;
+            temp = this->head->next;
             delete this->head;
-            this->head = temp->next;
+            this->head = temp;
             //delete temp;
         }
     }
