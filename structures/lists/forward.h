@@ -236,14 +236,14 @@ template <typename T>
 Node<T> *ForwardList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
 {
     Node<T> *res = nullptr;
-    if (a == nullptr)
+    if (!a)
     {
-        this->tail = b->next;
+        this->tail = b;
         return b;
     }
-    else if (b == nullptr)
+    else if (!b)
     {
-        this->tail = a->next;
+        this->tail = a;
         return a;
     }
     if (a->data <= b->data)

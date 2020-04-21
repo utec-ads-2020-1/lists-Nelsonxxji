@@ -8,6 +8,11 @@
 template <typename T>
 class LinkedList : public List<T>
 {
+private:
+    Node<T> *MergeSort(Node<T> *);
+    Node<T> *Split(Node<T> *);
+    Node<T> *SortedMerge(Node<T> *&, Node<T> *&);
+
 public:
     LinkedList() : List<T>() {}
 
@@ -195,6 +200,64 @@ void LinkedList<T>::clear()
 template <typename T>
 void LinkedList<T>::sort()
 {
+    this->head = this->MergeSort(this->head);
+}
+
+template <typename T>
+Node<T> *LinkedList<T>::MergeSort(Node<T> *headPtr)
+{
+    if (!headPtr || !headPtr->next)
+    {
+        return headPtr;
+    }
+    Node<T> *b = this->Split(headPtr);
+    headPtr = this->MergeSort(headPtr);
+    b = this->MergeSort(b);
+    return this->SortedMerge(headPtr, b);
+}
+
+template <typename T>
+Node<T> *LinkedList<T>::Split(Node<T> *headPtr)
+{
+    Node<T> *fast = headPtr;
+    Node<T> *slow = headPtr;
+    while (fast->next && fast->next->next)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    Node<T> *temp = slow->next;
+    slow->next = nullptr;
+    return temp;
+}
+
+template <typename T>
+Node<T> *LinkedList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
+{
+    if (!a)
+    {
+        this->tail = b;
+        return b;
+    }
+    if (!b)
+    {
+        this->tail = a;
+        return a;
+    }
+    if (a->data < b->data)
+    {
+        a->next = this->SortedMerge(a->next, b);
+        a->next->prev = a;
+        a->prev = nullptr;
+        return a;
+    }
+    else
+    {
+        b->next = this->SortedMerge(a, b->next);
+        b->next->prev = b;
+        b->prev = nullptr;
+        return b;
+    }
 }
 
 template <typename T>
