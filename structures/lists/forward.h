@@ -4,10 +4,14 @@
 #include "list.h"
 #include "iterators/forward_iterator.h"
 
-// TODO: Implement Sort
+// TODO: Implement iterators
 template <typename T>
 class ForwardList : public List<T>
 {
+private:
+    void MergeSort(Node<T> **);
+    void FrontBackSplit(Node<T> *, Node<T> **, Node<T> **);
+    Node<T> *SortedMerge(Node<T> *&, Node<T> *&);
 
 public:
     ForwardList() : List<T>() {}
@@ -188,13 +192,71 @@ void ForwardList<T>::clear()
 template <typename T>
 void ForwardList<T>::sort()
 {
-    if (this->empty() || this->nodes == 1)
+    this->MergeSort(&this->head);
+}
+
+template <typename T>
+void ForwardList<T>::MergeSort(Node<T> **headPtr)
+{
+    Node<T> *head = *headPtr;
+    Node<T> *a, *b;
+    if ((head == nullptr) || (head->next == nullptr))
     {
         return;
     }
+    FrontBackSplit(head, &a, &b);
+    this->MergeSort(&a);
+    this->MergeSort(&b);
+    *headPtr = this->SortedMerge(a, b);
+}
+
+template <typename T>
+void ForwardList<T>::FrontBackSplit(Node<T> *list,
+                                    Node<T> **frontSubList, Node<T> **backSubList)
+{
+    Node<T> *fast;
+    Node<T> *slow;
+    slow = list;
+    fast = list->next;
+    while (fast != nullptr)
+    {
+        fast = fast->next;
+        if (fast != nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+    }
+    *frontSubList = list;
+    *backSubList = slow->next;
+    slow->next = nullptr;
+}
+
+template <typename T>
+Node<T> *ForwardList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
+{
+    Node<T> *res = nullptr;
+    if (a == nullptr)
+    {
+        this->tail = b->next;
+        return b;
+    }
+    else if (b == nullptr)
+    {
+        this->tail = a->next;
+        return a;
+    }
+    if (a->data <= b->data)
+    {
+        res = a;
+        res->next = this->SortedMerge(a->next, b);
+    }
     else
     {
+        res = b;
+        res->next = this->SortedMerge(a, b->next);
     }
+    return (res);
 }
 
 template <typename T>
