@@ -52,40 +52,26 @@ public:
 template <typename T>
 T ForwardList<T>::front()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error ForwardList::front(): List is empty";
-        }
-        else
-        {
-            return this->head->data;
-        }
+        throw "Error ForwardList::front(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        return this->head->data;
     }
 }
 
 template <typename T>
 T ForwardList<T>::back()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error ForwardList::back(): List is empty";
-        }
-        else
-        {
-            return this->tail->data;
-        }
+        throw "Error ForwardList::back(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        return this->tail->data;
     }
 }
 
@@ -126,53 +112,39 @@ void ForwardList<T>::push_back(T data)
 template <typename T>
 void ForwardList<T>::pop_front()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error ForwardList::pop_front(): List is empty";
-        }
-        else
-        {
-            Node<T> *temp(0);
-            temp = this->head->next;
-            delete this->head;
-            this->head = temp;
-            --this->nodes;
-        }
+        throw "Error ForwardList::pop_front(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        Node<T> *temp(0);
+        temp = this->head->next;
+        delete this->head;
+        this->head = temp;
+        --this->nodes;
     }
 }
 
 template <typename T>
 void ForwardList<T>::pop_back()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error ForwardList::pop_back(): List is empty";
-        }
-        else
-        {
-            Node<T> *temp(0);
-            temp = this->head;
-            while (temp != this->tail->next)
-            {
-                temp = temp->next;
-            }
-            temp->next = nullptr;
-            delete this->tail;
-            this->tail = temp;
-            --this->nodes;
-        }
+        throw "Error ForwardList::pop_back(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        Node<T> *temp(0);
+        temp = this->head;
+        while (temp != this->tail->next)
+        {
+            temp = temp->next;
+        }
+        temp->next = nullptr;
+        delete this->tail;
+        this->tail = temp;
+        --this->nodes;
     }
 }
 
@@ -189,7 +161,7 @@ T ForwardList<T>::operator[](int index)
     }
     else if (index >= this->nodes)
     {
-        cerr << "Error ForwardList::[](): List index is out of range" << endl;
+        throw "Error ForwardList::[](): List index is out of range";
     }
     else
     {
@@ -253,33 +225,26 @@ void ForwardList<T>::sort()
 template <typename T>
 void ForwardList<T>::reverse()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error ForwardList::reverse(): List is empty";
-        }
-        else
-        {
-            Node<T> *temp = new Node<T>(0);
-            for (int i = 0; i < this->nodes - 1; i++)
-            {
-                temp = this->head;
-                for (int j = 0; j < this->nodes - 2 - i; j++)
-                {
-                    temp = temp->next;
-                }
-                temp->next->next = temp;
-            }
-            temp = this->head;
-            this->head = this->tail;
-            this->tail = temp;
-            this->tail->next = nullptr;
-        }
+        throw "Error ForwardList::reverse(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        Node<T> *temp = new Node<T>(0);
+        for (int i = 0; i < this->nodes - 1; i++)
+        {
+            temp = this->head;
+            for (int j = 0; j < this->nodes - 2 - i; j++)
+            {
+                temp = temp->next;
+            }
+            temp->next->next = temp;
+        }
+        temp = this->head;
+        this->head = this->tail;
+        this->tail = temp;
+        this->tail->next = nullptr;
     }
 }
 #endif

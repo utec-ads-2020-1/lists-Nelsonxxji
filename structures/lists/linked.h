@@ -51,40 +51,26 @@ public:
 template <typename T>
 T LinkedList<T>::front()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error LinkedList::front(): List is empty";
-        }
-        else
-        {
-            return this->head->data;
-        }
+        throw "Error LinkedList::front(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        return this->head->data;
     }
 }
 
 template <typename T>
 T LinkedList<T>::back()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error LinkedList::back(): List is empty";
-        }
-        else
-        {
-            return this->tail->data;
-        }
+        throw "Error LinkedList::back(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        return this->tail->data;
     }
 }
 
@@ -127,49 +113,35 @@ void LinkedList<T>::push_back(T data)
 template <typename T>
 void LinkedList<T>::pop_front()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error ForwardList::pop_front(): List is empty";
-        }
-        else
-        {
-            Node<T> *temp(0);
-            temp = this->head->next;
-            delete this->head;
-            this->head = temp;
-            --this->nodes;
-        }
+        throw "Error ForwardList::pop_front(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        Node<T> *temp(0);
+        temp = this->head->next;
+        delete this->head;
+        this->head = temp;
+        --this->nodes;
     }
 }
 
 template <typename T>
 void LinkedList<T>::pop_back()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error ForwardList::pop_back(): List is empty";
-        }
-        else
-        {
-            Node<T> *temp(0);
-            temp = this->tail->prev;
-            delete this->tail;
-            temp->next = nullptr;
-            this->tail = temp;
-            --this->nodes;
-        }
+        throw "Error ForwardList::pop_back(): List is empty";
     }
-    catch (const char *msg)
+    else
     {
-        cerr << msg << endl;
+        Node<T> *temp(0);
+        temp = this->tail->prev;
+        delete this->tail;
+        temp->next = nullptr;
+        this->tail = temp;
+        --this->nodes;
     }
 }
 
@@ -186,7 +158,7 @@ T LinkedList<T>::operator[](int index)
     }
     else if (index >= this->nodes)
     {
-        cerr << "Error LinkedList::[](): List index is out of range" << endl;
+        throw "Error LinkedList::[](): List index is out of range";
     }
     else
     {
@@ -256,44 +228,37 @@ void LinkedList<T>::sort()
 template <typename T>
 void LinkedList<T>::reverse()
 {
-    try
+    if (this->empty())
     {
-        if (this->empty())
-        {
-            throw "Error LinkedList::reverse(): List is empty";
-        }
-        else if (this->nodes == 1)
-        {
-            return;
-        }
-        else
-        {
-            Node<T> *temp1(0);
-            Node<T> *temp2(0);
-            Node<T> *temp3(0);
-
-            temp3 = this->head;
-
-            temp1 = this->head;
-            temp1->prev = temp1->next;
-            temp1->next = nullptr;
-            temp1 = temp1->prev;
-            while (temp1 != this->tail)
-            {
-                temp2 = temp1->prev;
-                temp1->prev = temp1->next;
-                temp1->next = temp2;
-                temp1 = temp1->prev;
-            }
-            temp1->next = temp1->prev;
-            temp1->prev = nullptr;
-            this->head = temp1;
-            this->tail = temp3;
-        }
+        throw "Error LinkedList::reverse(): List is empty";
     }
-    catch (const char *msg)
+    else if (this->nodes == 1)
     {
-        cerr << msg << endl;
+        return;
+    }
+    else
+    {
+        Node<T> *temp1(0);
+        Node<T> *temp2(0);
+        Node<T> *temp3(0);
+
+        temp3 = this->head;
+
+        temp1 = this->head;
+        temp1->prev = temp1->next;
+        temp1->next = nullptr;
+        temp1 = temp1->prev;
+        while (temp1 != this->tail)
+        {
+            temp2 = temp1->prev;
+            temp1->prev = temp1->next;
+            temp1->next = temp2;
+            temp1 = temp1->prev;
+        }
+        temp1->next = temp1->prev;
+        temp1->prev = nullptr;
+        this->head = temp1;
+        this->tail = temp3;
     }
 }
 #endif
