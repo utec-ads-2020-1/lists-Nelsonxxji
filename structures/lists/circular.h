@@ -4,7 +4,7 @@
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
 
-// TODO: Implement Sort
+// TODO: Implement Iterators
 template <typename T>
 class CircularLinkedList : public List<T>
 {
