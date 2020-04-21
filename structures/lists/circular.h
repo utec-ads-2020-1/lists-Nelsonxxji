@@ -32,16 +32,6 @@ public:
         return "Circular Linked List";
     }
 
-    /**
-         * Merges x into the list by transferring all of its elements at their respective 
-         * ordered positions into the container (both containers shall already be ordered).
-         * 
-         * This effectively removes all the elements in x (which becomes empty), and inserts 
-         * them into their ordered position within container (which expands in size by the number 
-         * of elements transferred). The operation is performed without constructing nor destroying
-         * any element: they are transferred, no matter whether x is an lvalue or an rvalue, 
-         * or whether the value_type supports move-construction or not.
-        */
     void merge(CircularLinkedList<T> &);
 };
 
@@ -52,10 +42,7 @@ T CircularLinkedList<T>::front()
     {
         throw "Error CircularLinkedList::front(): List is empty";
     }
-    else
-    {
-        return this->head->data;
-    }
+    return this->head->data;
 }
 
 template <typename T>
@@ -65,10 +52,7 @@ T CircularLinkedList<T>::back()
     {
         throw "Error CircularLinkedList::back(): List is empty";
     }
-    else
-    {
-        return this->tail->data;
-    }
+    return this->tail->data;
 }
 
 template <typename T>
@@ -122,16 +106,13 @@ void CircularLinkedList<T>::pop_front()
     {
         throw "Error CircularLinkedList::pop_front(): List is empty";
     }
-    else
-    {
-        Node<T> *temp(0);
-        temp = this->head->next;
-        delete this->head;
-        temp->prev = this->tail;
-        this->tail->next = temp;
-        this->head = temp;
-        --this->nodes;
-    }
+    Node<T> *temp(0);
+    temp = this->head->next;
+    delete this->head;
+    temp->prev = this->tail;
+    this->tail->next = temp;
+    this->head = temp;
+    --this->nodes;
 }
 
 template <typename T>
@@ -141,16 +122,13 @@ void CircularLinkedList<T>::pop_back()
     {
         throw "Error CircularLinkedList::pop_back(): List is empty";
     }
-    else
-    {
-        Node<T> *temp(0);
-        temp = this->tail->prev;
-        delete this->tail;
-        temp->next = this->head;
-        this->head->prev = temp;
-        this->tail = temp;
-        --this->nodes;
-    }
+    Node<T> *temp(0);
+    temp = this->tail->prev;
+    delete this->tail;
+    temp->next = this->head;
+    this->head->prev = temp;
+    this->tail = temp;
+    --this->nodes;
 }
 
 template <typename T>
@@ -168,31 +146,28 @@ T CircularLinkedList<T>::operator[](int index)
     {
         throw "Error CircularLinkedList::[](): List index is out of range";
     }
+    Node<T> *temp(0);
+    if (index <= (this->nodes - 1) / 2)
+    {
+        int tempIndex = 0;
+        temp = this->head;
+        while (tempIndex != index)
+        {
+            temp = temp->next;
+            ++tempIndex;
+        }
+    }
     else
     {
-        Node<T> *temp(0);
-        if (index <= (this->nodes - 1) / 2)
+        int tempIndex = this->nodes - 1;
+        temp = this->tail;
+        while (tempIndex != index)
         {
-            int tempIndex = 0;
-            temp = this->head;
-            while (tempIndex != index)
-            {
-                temp = temp->next;
-                ++tempIndex;
-            }
+            temp = temp->prev;
+            --tempIndex;
         }
-        else
-        {
-            int tempIndex = this->nodes - 1;
-            temp = this->tail;
-            while (tempIndex != index)
-            {
-                temp = temp->prev;
-                --tempIndex;
-            }
-        }
-        return temp->data;
     }
+    return temp->data;
 }
 
 template <typename T>
@@ -245,29 +220,44 @@ void CircularLinkedList<T>::reverse()
     {
         return;
     }
-    else
+    Node<T> *temp1(0);
+    Node<T> *temp2(0);
+    Node<T> *temp3(0);
+
+    temp3 = this->head;
+
+    temp1 = this->head;
+    temp1->prev = temp1->next;
+    temp1->next = this->tail;
+    temp1 = temp1->prev;
+    while (temp1 != this->tail)
     {
-        Node<T> *temp1(0);
-        Node<T> *temp2(0);
-        Node<T> *temp3(0);
-
-        temp3 = this->head;
-
-        temp1 = this->head;
+        temp2 = temp1->prev;
         temp1->prev = temp1->next;
-        temp1->next = this->tail;
+        temp1->next = temp2;
         temp1 = temp1->prev;
-        while (temp1 != this->tail)
-        {
-            temp2 = temp1->prev;
-            temp1->prev = temp1->next;
-            temp1->next = temp2;
-            temp1 = temp1->prev;
-        }
-        temp1->next = temp1->prev;
-        temp1->prev = temp3;
-        this->head = temp1;
-        this->tail = temp3;
     }
+    temp1->next = temp1->prev;
+    temp1->prev = temp3;
+    this->head = temp1;
+    this->tail = temp3;
+}
+
+template <typename T>
+void CircularLinkedList<T>::merge(CircularLinkedList<T> &mergeList)
+{
+    if (this->empty() || mergeList.empty())
+    {
+        throw "Error CircularLinkedList::merge(): Cannot merge empty List";
+    }
+    this->tail->next = mergeList.head;
+    mergeList.head->prev = this->tail;
+    this->tail = mergeList.tail;
+    this->tail->next = this->head;
+    this->head->prev = this->tail;
+    this->nodes += mergeList.nodes;
+    mergeList.head = nullptr;
+    mergeList.tail = nullptr;
+    mergeList.nodes = 0;
 }
 #endif

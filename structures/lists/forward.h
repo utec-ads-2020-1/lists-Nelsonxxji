@@ -33,16 +33,6 @@ public:
         return "Forward List";
     }
 
-    /**
-         * Merges x into the list by transferring all of its elements at their respective 
-         * ordered positions into the container (both containers shall already be ordered).
-         * 
-         * This effectively removes all the elements in x (which becomes empty), and inserts 
-         * them into their ordered position within container (which expands in size by the number 
-         * of elements transferred). The operation is performed without constructing nor destroying
-         * any element: they are transferred, no matter whether x is an lvalue or an rvalue, 
-         * or whether the value_type supports move-construction or not.
-        */
     void merge(ForwardList<T> &);
 };
 
@@ -53,10 +43,7 @@ T ForwardList<T>::front()
     {
         throw "Error ForwardList::front(): List is empty";
     }
-    else
-    {
-        return this->head->data;
-    }
+    return this->head->data;
 }
 
 template <typename T>
@@ -66,10 +53,7 @@ T ForwardList<T>::back()
     {
         throw "Error ForwardList::back(): List is empty";
     }
-    else
-    {
-        return this->tail->data;
-    }
+    return this->tail->data;
 }
 
 template <typename T>
@@ -113,14 +97,11 @@ void ForwardList<T>::pop_front()
     {
         throw "Error ForwardList::pop_front(): List is empty";
     }
-    else
-    {
-        Node<T> *temp(0);
-        temp = this->head->next;
-        delete this->head;
-        this->head = temp;
-        --this->nodes;
-    }
+    Node<T> *temp(0);
+    temp = this->head->next;
+    delete this->head;
+    this->head = temp;
+    --this->nodes;
 }
 
 template <typename T>
@@ -130,19 +111,16 @@ void ForwardList<T>::pop_back()
     {
         throw "Error ForwardList::pop_back(): List is empty";
     }
-    else
+    Node<T> *temp(0);
+    temp = this->head;
+    while (temp != this->tail->next)
     {
-        Node<T> *temp(0);
-        temp = this->head;
-        while (temp != this->tail->next)
-        {
-            temp = temp->next;
-        }
-        temp->next = nullptr;
-        delete this->tail;
-        this->tail = temp;
-        --this->nodes;
+        temp = temp->next;
     }
+    temp->next = nullptr;
+    delete this->tail;
+    this->tail = temp;
+    --this->nodes;
 }
 
 template <typename T>
@@ -226,22 +204,34 @@ void ForwardList<T>::reverse()
     {
         throw "Error ForwardList::reverse(): List is empty";
     }
-    else
+    Node<T> *temp = new Node<T>(0);
+    for (int i = 0; i < this->nodes - 1; i++)
     {
-        Node<T> *temp = new Node<T>(0);
-        for (int i = 0; i < this->nodes - 1; i++)
-        {
-            temp = this->head;
-            for (int j = 0; j < this->nodes - 2 - i; j++)
-            {
-                temp = temp->next;
-            }
-            temp->next->next = temp;
-        }
         temp = this->head;
-        this->head = this->tail;
-        this->tail = temp;
-        this->tail->next = nullptr;
+        for (int j = 0; j < this->nodes - 2 - i; j++)
+        {
+            temp = temp->next;
+        }
+        temp->next->next = temp;
     }
+    temp = this->head;
+    this->head = this->tail;
+    this->tail = temp;
+    this->tail->next = nullptr;
+}
+
+template <typename T>
+void ForwardList<T>::merge(ForwardList<T> &mergeList)
+{
+    if (this->empty() || mergeList.empty())
+    {
+        throw "Error ForwardList::merge(): Cannot merge empty List";
+    }
+    this->tail->next = mergeList.head;
+    this->tail = mergeList.tail;
+    this->nodes += mergeList.nodes;
+    mergeList.head = nullptr;
+    mergeList.tail = nullptr;
+    mergeList.nodes = 0;
 }
 #endif
