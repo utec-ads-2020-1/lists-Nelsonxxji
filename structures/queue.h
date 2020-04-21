@@ -58,64 +58,32 @@ void Queue<T>::push(T data)
 template <typename T>
 void Queue<T>::pop()
 {
-	try
+	if (this->empty())
 	{
-		if (this->empty())
-		{
-			throw "Error Queue::pop(): Queue is empty";
-		}
-		else
-		{
-			T *temp = this->data;
-			//delete this->data;
-			this->data = ++temp;
-			this->top--;
-		}
+		throw "Error Queue::pop(): Queue is empty";
 	}
-	catch (const char *msg)
-	{
-		cerr << msg << endl;
-	}
+	++this->data;
+	this->top--;
 }
 
 template <typename T>
 T Queue<T>::front()
 {
-	try
+	if (this->empty())
 	{
-		if (this->empty())
-		{
-			throw "Error Queue::front(): Queue is empty";
-		}
-		else
-		{
-			return *this->data;
-		}
+		throw "Error Queue::front(): Queue is empty";
 	}
-	catch (const char *msg)
-	{
-		cerr << msg << endl;
-	}
+	return *this->data;
 }
 
 template <typename T>
 T Queue<T>::back()
 {
-	try
+	if (this->empty())
 	{
-		if (this->empty())
-		{
-			throw "Error Queue::back(): Queue is empty";
-		}
-		else
-		{
-			return this->data[top];
-		}
+		throw "Error Queue::back(): Queue is empty";
 	}
-	catch (const char *msg)
-	{
-		cerr << msg << endl;
-	}
+	return this->data[top];
 }
 
 template <typename T>

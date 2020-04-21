@@ -58,41 +58,21 @@ void Stack<T>::push(T data)
 template <typename T>
 void Stack<T>::pop()
 {
-	try
+	if (this->empty())
 	{
-		if (this->empty())
-		{
-			throw "Error Queue::pop(): Stack is empty";
-		}
-		else
-		{
-			--this->top;
-		}
+		throw "Error Queue::pop(): Stack is empty";
 	}
-	catch (const char *msg)
-	{
-		cerr << msg << endl;
-	}
+	--this->top;
 }
 
 template <typename T>
 T Stack<T>::peak()
 {
-	try
+	if (this->empty())
 	{
-		if (this->empty())
-		{
-			throw "Error Queue::peak(): Stack is empty";
-		}
-		else
-		{
-			return this->data[top];
-		}
+		throw "Error Queue::peak(): Stack is empty";
 	}
-	catch (const char *msg)
-	{
-		cerr << msg << endl;
-	}
+	return this->data[top];
 }
 
 template <typename T>
