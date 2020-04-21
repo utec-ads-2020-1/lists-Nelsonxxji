@@ -4,8 +4,6 @@
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
 
-using namespace std;
-
 // TODO: Implement Sort
 template <typename T>
 class CircularLinkedList : public List<T>
@@ -29,7 +27,7 @@ public:
     BidirectionalIterator<T> begin();
     BidirectionalIterator<T> end();
 
-    string name()
+    std::string name()
     {
         return "Circular Linked List";
     }

@@ -1,11 +1,8 @@
 #ifndef FORWARD_H
 #define FORWARD_H
 
-#include <iostream>
 #include "list.h"
 #include "iterators/forward_iterator.h"
-
-using namespace std;
 
 // TODO: Implement Sort
 template <typename T>
@@ -31,7 +28,7 @@ public:
     ForwardIterator<T> begin();
     ForwardIterator<T> end();
 
-    string name()
+    std::string name()
     {
         return "Forward List";
     }

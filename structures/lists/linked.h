@@ -1,11 +1,8 @@
 #ifndef LINKED_H
 #define LINKED_H
 
-#include <iostream>
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
-
-using namespace std;
 
 // TODO: Implement Sort
 template <typename T>
@@ -30,7 +27,7 @@ public:
     BidirectionalIterator<T> begin();
     BidirectionalIterator<T> end();
 
-    string name()
+    std::string name()
     {
         return "Linked List";
     }
