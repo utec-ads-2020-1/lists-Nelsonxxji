@@ -4,7 +4,7 @@
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
 
-// TODO: Implement Iterators
+// TODO: Implement end()
 template <typename T>
 class CircularLinkedList : public List<T>
 {
@@ -39,6 +39,19 @@ public:
 
     void merge(CircularLinkedList<T> &);
 };
+
+template <typename T>
+BidirectionalIterator<T> CircularLinkedList<T>::begin(){
+    return BidirectionalIterator<T>(this->head);
+}
+
+template <typename T>
+BidirectionalIterator<T> CircularLinkedList<T>::end(){
+    Node<T>* temp = new Node<T>(0);
+    this->tail->next = temp;
+    this->head->prev = temp;
+    return BidirectionalIterator<T>(temp->next);
+}
 
 template <typename T>
 T CircularLinkedList<T>::front()

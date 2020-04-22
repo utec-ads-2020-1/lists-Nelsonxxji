@@ -4,7 +4,6 @@
 #include "list.h"
 #include "iterators/forward_iterator.h"
 
-// TODO: Implement Iterators
 template <typename T>
 class ForwardList : public List<T>
 {

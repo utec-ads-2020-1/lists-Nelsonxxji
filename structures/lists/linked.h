@@ -41,6 +41,16 @@ public:
 };
 
 template <typename T>
+BidirectionalIterator<T> LinkedList<T>::begin(){
+    return BidirectionalIterator<T>(this->head);
+}
+
+template <typename T>
+BidirectionalIterator<T> LinkedList<T>::end(){
+    return BidirectionalIterator<T>(this->tail->next);
+}
+
+template <typename T>
 T LinkedList<T>::front()
 {
     if (this->empty())
