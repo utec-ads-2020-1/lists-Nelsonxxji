@@ -2,17 +2,15 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
-using namespace std;
-
 #define MAX 1000
 
-// TODO: Core Dumped Error in Destructor
 template <typename T>
 class Queue
 {
 	T *data;
 	int top;
 	int capacity;
+	int frontVal;
 
 public:
 	Queue(int size = MAX);
@@ -32,12 +30,13 @@ Queue<T>::Queue(int size)
 	this->data = new T(size);
 	this->capacity = size;
 	this->top = -1;
+	this->frontVal = 0;
 }
 
 template <typename T>
 Queue<T>::~Queue()
 {
-	delete this->data;
+	delete[] this->data;
 }
 
 template <typename T>
@@ -48,8 +47,8 @@ void Queue<T>::push(T data)
 	{
 		this->capacity *= 2;
 		T *newQueue = new T(capacity);
-		copy(this->data, &this->data[capacity - 1], newQueue);
-		delete this->data;
+		std::copy(this->data, &this->data[capacity - 1], newQueue);
+		delete[] this->data;
 		this->data = newQueue;
 	}
 	this->data[top] = data;
@@ -62,8 +61,8 @@ void Queue<T>::pop()
 	{
 		throw "Error Queue::pop(): Queue is empty";
 	}
-	++this->data;
-	this->top--;
+	++this->frontVal;
+	--this->top;
 }
 
 template <typename T>
@@ -73,7 +72,7 @@ T Queue<T>::front()
 	{
 		throw "Error Queue::front(): Queue is empty";
 	}
-	return *this->data;
+	return this->data[frontVal];
 }
 
 template <typename T>

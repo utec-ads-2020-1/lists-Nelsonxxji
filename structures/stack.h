@@ -6,7 +6,6 @@ using namespace std;
 
 #define MAX 1000
 
-// TODO: Handle Resize
 template <typename T>
 class Stack
 {
@@ -37,7 +36,7 @@ Stack<T>::Stack(int size)
 template <typename T>
 Stack<T>::~Stack()
 {
-	delete this->data;
+	delete[] this->data;
 }
 
 template <typename T>
@@ -49,7 +48,7 @@ void Stack<T>::push(T data)
 		this->capacity *= 2;
 		T *newQueue = new T(capacity);
 		copy(this->data, &this->data[capacity - 1], newQueue);
-		delete this->data;
+		delete[] this->data;
 		this->data = newQueue;
 	}
 	this->data[top] = data;
