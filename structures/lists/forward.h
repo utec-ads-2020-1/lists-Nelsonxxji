@@ -41,6 +41,16 @@ public:
 };
 
 template <typename T>
+ForwardIterator<T> ForwardList<T>::begin(){
+    return ForwardIterator<T>(this->head);
+}
+
+template <typename T>
+ForwardIterator<T> ForwardList<T>::end(){
+    return ForwardIterator<T>(this->tail->next);
+}
+
+template <typename T>
 T ForwardList<T>::front()
 {
     if (this->empty())
