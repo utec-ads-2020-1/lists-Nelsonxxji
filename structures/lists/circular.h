@@ -41,16 +41,15 @@ public:
 };
 
 template <typename T>
-BidirectionalIterator<T> CircularLinkedList<T>::begin(){
+BidirectionalIterator<T> CircularLinkedList<T>::begin()
+{
     return BidirectionalIterator<T>(this->head);
 }
 
 template <typename T>
-BidirectionalIterator<T> CircularLinkedList<T>::end(){
-    Node<T>* temp = new Node<T>(0);
-    this->tail->next = temp;
-    this->head->prev = temp;
-    return BidirectionalIterator<T>(temp->next);
+BidirectionalIterator<T> CircularLinkedList<T>::end()
+{
+    return BidirectionalIterator<T>(this->head);
 }
 
 template <typename T>
@@ -120,33 +119,31 @@ void CircularLinkedList<T>::push_back(T data)
 template <typename T>
 void CircularLinkedList<T>::pop_front()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error CircularLinkedList::pop_front(): List is empty";
+        Node<T> *temp(0);
+        temp = this->head->next;
+        delete this->head;
+        temp->prev = this->tail;
+        this->tail->next = temp;
+        this->head = temp;
+        --this->nodes;
     }
-    Node<T> *temp(0);
-    temp = this->head->next;
-    delete this->head;
-    temp->prev = this->tail;
-    this->tail->next = temp;
-    this->head = temp;
-    --this->nodes;
 }
 
 template <typename T>
 void CircularLinkedList<T>::pop_back()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error CircularLinkedList::pop_back(): List is empty";
+        Node<T> *temp(0);
+        temp = this->tail->prev;
+        delete this->tail;
+        temp->next = this->head;
+        this->head->prev = temp;
+        this->tail = temp;
+        --this->nodes;
     }
-    Node<T> *temp(0);
-    temp = this->tail->prev;
-    delete this->tail;
-    temp->next = this->head;
-    this->head->prev = temp;
-    this->tail = temp;
-    --this->nodes;
 }
 
 template <typename T>
@@ -191,14 +188,7 @@ T CircularLinkedList<T>::operator[](int index)
 template <typename T>
 bool CircularLinkedList<T>::empty()
 {
-    if (this->nodes == 0)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return this->nodes == 0;
 }
 
 template <typename T>
@@ -291,50 +281,58 @@ Node<T> *CircularLinkedList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
 template <typename T>
 void CircularLinkedList<T>::reverse()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error CircularLinkedList::reverse(): List is empty";
-    }
-    else if (this->nodes == 1)
-    {
-        return;
-    }
-    Node<T> *temp1(0);
-    Node<T> *temp2(0);
-    Node<T> *temp3(0);
+        if (this->nodes == 1)
+        {
+            return;
+        }
+        Node<T> *temp1(0);
+        Node<T> *temp2(0);
+        Node<T> *temp3(0);
 
-    temp3 = this->head;
+        temp3 = this->head;
 
-    temp1 = this->head;
-    temp1->prev = temp1->next;
-    temp1->next = this->tail;
-    temp1 = temp1->prev;
-    while (temp1 != this->tail)
-    {
-        temp2 = temp1->prev;
+        temp1 = this->head;
         temp1->prev = temp1->next;
-        temp1->next = temp2;
+        temp1->next = this->tail;
         temp1 = temp1->prev;
+        while (temp1 != this->tail)
+        {
+            temp2 = temp1->prev;
+            temp1->prev = temp1->next;
+            temp1->next = temp2;
+            temp1 = temp1->prev;
+        }
+        temp1->next = temp1->prev;
+        temp1->prev = temp3;
+        this->head = temp1;
+        this->tail = temp3;
     }
-    temp1->next = temp1->prev;
-    temp1->prev = temp3;
-    this->head = temp1;
-    this->tail = temp3;
 }
 
 template <typename T>
 void CircularLinkedList<T>::merge(CircularLinkedList<T> &mergeList)
 {
-    if (this->empty() || mergeList.empty())
+    if (this->empty())
     {
-        throw "Error CircularLinkedList::merge(): Cannot merge empty List";
+        this->head = mergeList.head;
+        this->tail = mergeList.tail;
+        this->nodes = mergeList.nodes;
     }
-    this->tail->next = mergeList.head;
-    mergeList.head->prev = this->tail;
-    this->tail = mergeList.tail;
-    this->tail->next = this->head;
-    this->head->prev = this->tail;
-    this->nodes += mergeList.nodes;
+    else if (mergeList.empty())
+    {
+        return;
+    }
+    else
+    {
+        this->tail->next = mergeList.head;
+        mergeList.head->prev = this->tail;
+        this->tail = mergeList.tail;
+        this->tail->next = this->head;
+        this->head->prev = this->tail;
+        this->nodes += mergeList.nodes;
+    }
     mergeList.head = nullptr;
     mergeList.tail = nullptr;
     mergeList.nodes = 0;

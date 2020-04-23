@@ -4,7 +4,6 @@
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
 
-// TODO: Implement Iterators
 template <typename T>
 class LinkedList : public List<T>
 {
@@ -41,12 +40,14 @@ public:
 };
 
 template <typename T>
-BidirectionalIterator<T> LinkedList<T>::begin(){
+BidirectionalIterator<T> LinkedList<T>::begin()
+{
     return BidirectionalIterator<T>(this->head);
 }
 
 template <typename T>
-BidirectionalIterator<T> LinkedList<T>::end(){
+BidirectionalIterator<T> LinkedList<T>::end()
+{
     return BidirectionalIterator<T>(this->tail->next);
 }
 
@@ -109,30 +110,28 @@ void LinkedList<T>::push_back(T data)
 template <typename T>
 void LinkedList<T>::pop_front()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error ForwardList::pop_front(): List is empty";
+        Node<T> *temp(0);
+        temp = this->head->next;
+        delete this->head;
+        this->head = temp;
+        --this->nodes;
     }
-    Node<T> *temp(0);
-    temp = this->head->next;
-    delete this->head;
-    this->head = temp;
-    --this->nodes;
 }
 
 template <typename T>
 void LinkedList<T>::pop_back()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error ForwardList::pop_back(): List is empty";
+        Node<T> *temp(0);
+        temp = this->tail->prev;
+        delete this->tail;
+        temp->next = nullptr;
+        this->tail = temp;
+        --this->nodes;
     }
-    Node<T> *temp(0);
-    temp = this->tail->prev;
-    delete this->tail;
-    temp->next = nullptr;
-    this->tail = temp;
-    --this->nodes;
 }
 
 template <typename T>
@@ -177,14 +176,7 @@ T LinkedList<T>::operator[](int index)
 template <typename T>
 bool LinkedList<T>::empty()
 {
-    if (!this->head)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return !this->head;
 }
 
 template <typename T>
@@ -273,48 +265,56 @@ Node<T> *LinkedList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
 template <typename T>
 void LinkedList<T>::reverse()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error LinkedList::reverse(): List is empty";
-    }
-    else if (this->nodes == 1)
-    {
-        return;
-    }
-    Node<T> *temp1(0);
-    Node<T> *temp2(0);
-    Node<T> *temp3(0);
+        if (this->nodes == 1)
+        {
+            return;
+        }
+        Node<T> *temp1(0);
+        Node<T> *temp2(0);
+        Node<T> *temp3(0);
 
-    temp3 = this->head;
+        temp3 = this->head;
 
-    temp1 = this->head;
-    temp1->prev = temp1->next;
-    temp1->next = nullptr;
-    temp1 = temp1->prev;
-    while (temp1 != this->tail)
-    {
-        temp2 = temp1->prev;
+        temp1 = this->head;
         temp1->prev = temp1->next;
-        temp1->next = temp2;
+        temp1->next = nullptr;
         temp1 = temp1->prev;
+        while (temp1 != this->tail)
+        {
+            temp2 = temp1->prev;
+            temp1->prev = temp1->next;
+            temp1->next = temp2;
+            temp1 = temp1->prev;
+        }
+        temp1->next = temp1->prev;
+        temp1->prev = nullptr;
+        this->head = temp1;
+        this->tail = temp3;
     }
-    temp1->next = temp1->prev;
-    temp1->prev = nullptr;
-    this->head = temp1;
-    this->tail = temp3;
 }
 
 template <typename T>
 void LinkedList<T>::merge(LinkedList<T> &mergeList)
 {
-    if (this->empty() || mergeList.empty())
+    if (this->empty())
     {
-        throw "Error LinkedList::merge(): Cannot merge empty List";
+        this->head = mergeList.head;
+        this->tail = mergeList.tail;
+        this->nodes = mergeList.nodes;
     }
-    this->tail->next = mergeList.head;
-    mergeList.head->prev = this->tail;
-    this->tail = mergeList.tail;
-    this->nodes += mergeList.nodes;
+    else if (mergeList.empty())
+    {
+        return;
+    }
+    else
+    {
+        this->tail->next = mergeList.head;
+        mergeList.head->prev = this->tail;
+        this->tail = mergeList.tail;
+        this->nodes += mergeList.nodes;
+    }
     mergeList.head = nullptr;
     mergeList.tail = nullptr;
     mergeList.nodes = 0;

@@ -40,12 +40,14 @@ public:
 };
 
 template <typename T>
-ForwardIterator<T> ForwardList<T>::begin(){
+ForwardIterator<T> ForwardList<T>::begin()
+{
     return ForwardIterator<T>(this->head);
 }
 
 template <typename T>
-ForwardIterator<T> ForwardList<T>::end(){
+ForwardIterator<T> ForwardList<T>::end()
+{
     return ForwardIterator<T>(this->tail->next);
 }
 
@@ -106,34 +108,32 @@ void ForwardList<T>::push_back(T data)
 template <typename T>
 void ForwardList<T>::pop_front()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error ForwardList::pop_front(): List is empty";
+        Node<T> *temp(0);
+        temp = this->head->next;
+        delete this->head;
+        this->head = temp;
+        --this->nodes;
     }
-    Node<T> *temp(0);
-    temp = this->head->next;
-    delete this->head;
-    this->head = temp;
-    --this->nodes;
 }
 
 template <typename T>
 void ForwardList<T>::pop_back()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error ForwardList::pop_back(): List is empty";
+        Node<T> *temp(0);
+        temp = this->head;
+        while (temp != this->tail->next)
+        {
+            temp = temp->next;
+        }
+        temp->next = nullptr;
+        delete this->tail;
+        this->tail = temp;
+        --this->nodes;
     }
-    Node<T> *temp(0);
-    temp = this->head;
-    while (temp != this->tail->next)
-    {
-        temp = temp->next;
-    }
-    temp->next = nullptr;
-    delete this->tail;
-    this->tail = temp;
-    --this->nodes;
 }
 
 template <typename T>
@@ -168,14 +168,7 @@ T ForwardList<T>::operator[](int index)
 template <typename T>
 bool ForwardList<T>::empty()
 {
-    if (!this->head)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return !this->head;
 }
 
 template <typename T>
@@ -271,36 +264,44 @@ Node<T> *ForwardList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
 template <typename T>
 void ForwardList<T>::reverse()
 {
-    if (this->empty())
+    if (!this->empty())
     {
-        throw "Error ForwardList::reverse(): List is empty";
-    }
-    Node<T> *temp = new Node<T>(0);
-    for (int i = 0; i < this->nodes - 1; i++)
-    {
-        temp = this->head;
-        for (int j = 0; j < this->nodes - 2 - i; j++)
+        Node<T> *temp = new Node<T>(0);
+        for (int i = 0; i < this->nodes - 1; i++)
         {
-            temp = temp->next;
+            temp = this->head;
+            for (int j = 0; j < this->nodes - 2 - i; j++)
+            {
+                temp = temp->next;
+            }
+            temp->next->next = temp;
         }
-        temp->next->next = temp;
+        temp = this->head;
+        this->head = this->tail;
+        this->tail = temp;
+        this->tail->next = nullptr;
     }
-    temp = this->head;
-    this->head = this->tail;
-    this->tail = temp;
-    this->tail->next = nullptr;
 }
 
 template <typename T>
 void ForwardList<T>::merge(ForwardList<T> &mergeList)
 {
-    if (this->empty() || mergeList.empty())
+    if (this->empty())
     {
-        throw "Error ForwardList::merge(): Cannot merge empty List";
+        this->head = mergeList.head;
+        this->tail = mergeList.tail;
+        this->nodes = mergeList.nodes;
     }
-    this->tail->next = mergeList.head;
-    this->tail = mergeList.tail;
-    this->nodes += mergeList.nodes;
+    else if (mergeList.empty())
+    {
+        return;
+    }
+    else
+    {
+        this->tail->next = mergeList.head;
+        this->tail = mergeList.tail;
+        this->nodes += mergeList.nodes;
+    }
     mergeList.head = nullptr;
     mergeList.tail = nullptr;
     mergeList.nodes = 0;
