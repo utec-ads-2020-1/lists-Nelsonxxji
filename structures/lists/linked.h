@@ -27,6 +27,7 @@ public:
     void clear();
     void sort();
     void reverse();
+    //void updateSentinel();
 
     BidirectionalIterator<T> begin();
     BidirectionalIterator<T> end();
@@ -42,12 +43,14 @@ public:
 template <typename T>
 BidirectionalIterator<T> LinkedList<T>::begin()
 {
+    //return BidirectionalIterator<T>(this->sentinel->next);
     return BidirectionalIterator<T>(this->head);
 }
 
 template <typename T>
 BidirectionalIterator<T> LinkedList<T>::end()
 {
+    //return BidirectionalIterator<T>(this->sentinel->prev);
     return BidirectionalIterator<T>(this->tail->next);
 }
 
@@ -87,6 +90,7 @@ void LinkedList<T>::push_front(T data)
         this->head = newNode;
     }
     this->nodes++;
+    //this->updateSentinel();
 }
 
 template <typename T>
@@ -105,6 +109,7 @@ void LinkedList<T>::push_back(T data)
         this->tail = newNode;
     }
     this->nodes++;
+    //this->updateSentinel();
 }
 
 template <typename T>
@@ -117,6 +122,7 @@ void LinkedList<T>::pop_front()
         delete this->head;
         this->head = temp;
         --this->nodes;
+        //this->updateSentinel();
     }
 }
 
@@ -131,6 +137,7 @@ void LinkedList<T>::pop_back()
         temp->next = nullptr;
         this->tail = temp;
         --this->nodes;
+        //this->updateSentinel();
     }
 }
 
@@ -203,6 +210,11 @@ template <typename T>
 void LinkedList<T>::sort()
 {
     this->head = this->MergeSort(this->head);
+    this->tail = this->head;
+    while (this->tail->next){
+        this->tail = this->tail->next;
+    }
+    //this->updateSentinel();
 }
 
 template <typename T>
@@ -238,12 +250,10 @@ Node<T> *LinkedList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
 {
     if (!a)
     {
-        this->tail = b;
         return b;
     }
     if (!b)
     {
-        this->tail = a;
         return a;
     }
     if (a->data < b->data)
@@ -292,6 +302,7 @@ void LinkedList<T>::reverse()
         temp1->prev = nullptr;
         this->head = temp1;
         this->tail = temp3;
+        //this->updateSentinel();
     }
 }
 
@@ -318,5 +329,14 @@ void LinkedList<T>::merge(LinkedList<T> &mergeList)
     mergeList.head = nullptr;
     mergeList.tail = nullptr;
     mergeList.nodes = 0;
+    //this->updateSentinel();
 }
+
+/*
+template <typename T>
+void LinkedList<T>::updateSentinel(){
+    this->sentinel->next = this->head;
+    this->sentinel->prev = this->tail;
+}
+*/
 #endif

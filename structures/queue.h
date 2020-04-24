@@ -57,12 +57,11 @@ void Queue<T>::push(T data)
 template <typename T>
 void Queue<T>::pop()
 {
-	if (this->empty())
+	if (!this->empty())
 	{
-		throw "Error Queue::pop(): Queue is empty";
+		++this->frontVal;
+		--this->top;
 	}
-	++this->frontVal;
-	--this->top;
 }
 
 template <typename T>

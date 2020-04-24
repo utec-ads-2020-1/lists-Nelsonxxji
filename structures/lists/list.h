@@ -11,9 +11,10 @@ class List {
         Node<T>* head;
         Node<T>* tail;
         int nodes;
+        Node<T>* sentinel;
 
     public:
-        List() : head(nullptr), tail(nullptr), nodes(0) {};
+        List();
         ~List();
 
         virtual T front() = 0;
@@ -30,6 +31,13 @@ class List {
         virtual void reverse() = 0;
         virtual std::string name() = 0;
 };
+
+template <typename T>
+List<T>::List(){
+    this->head = this->tail = nullptr;
+    this->nodes = 0;
+    this->sentinel = new Node<T>(0);
+}
 
 template <typename T>
 List<T>::~List(){

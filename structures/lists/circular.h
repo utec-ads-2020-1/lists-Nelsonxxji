@@ -28,6 +28,7 @@ public:
     void clear();
     void sort();
     void reverse();
+    //void updateSentinel();
 
     BidirectionalIterator<T> begin();
     BidirectionalIterator<T> end();
@@ -43,13 +44,15 @@ public:
 template <typename T>
 BidirectionalIterator<T> CircularLinkedList<T>::begin()
 {
+    //return BidirectionalIterator<T>(this->sentinel->next);
     return BidirectionalIterator<T>(this->head);
 }
 
 template <typename T>
 BidirectionalIterator<T> CircularLinkedList<T>::end()
 {
-    return BidirectionalIterator<T>(this->head);
+    //return BidirectionalIterator<T>(this->sentinel->prev);
+    return BidirectionalIterator<T>(this->tail->next);
 }
 
 template <typename T>
@@ -92,6 +95,7 @@ void CircularLinkedList<T>::push_front(T data)
         this->head = newNode;
     }
     ++this->nodes;
+    //this->updateSentinel();
 }
 
 template <typename T>
@@ -114,6 +118,7 @@ void CircularLinkedList<T>::push_back(T data)
         this->tail = newNode;
     }
     ++this->nodes;
+    //this->updateSentinel();
 }
 
 template <typename T>
@@ -128,6 +133,7 @@ void CircularLinkedList<T>::pop_front()
         this->tail->next = temp;
         this->head = temp;
         --this->nodes;
+        //this->updateSentinel();
     }
 }
 
@@ -143,6 +149,7 @@ void CircularLinkedList<T>::pop_back()
         this->head->prev = temp;
         this->tail = temp;
         --this->nodes;
+        //this->updateSentinel();
     }
 }
 
@@ -217,8 +224,13 @@ void CircularLinkedList<T>::sort()
     this->head->prev = nullptr;
     this->tail->next = nullptr;
     this->head = this->MergeSort(this->head);
+    this->tail = this->head;
+    while (this->tail->next){
+        this->tail = this->tail->next;
+    }
     this->head->prev = this->tail;
     this->tail->next = this->head;
+    //this->updateSentinel();
 }
 
 template <typename T>
@@ -254,12 +266,10 @@ Node<T> *CircularLinkedList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
 {
     if (!a)
     {
-        this->tail = b;
         return b;
     }
     if (!b)
     {
-        this->tail = a;
         return a;
     }
     if (a->data < b->data)
@@ -308,6 +318,7 @@ void CircularLinkedList<T>::reverse()
         temp1->prev = temp3;
         this->head = temp1;
         this->tail = temp3;
+        //this->updateSentinel();
     }
 }
 
@@ -336,5 +347,13 @@ void CircularLinkedList<T>::merge(CircularLinkedList<T> &mergeList)
     mergeList.head = nullptr;
     mergeList.tail = nullptr;
     mergeList.nodes = 0;
+    //this->updateSentinel();
 }
+/*
+template <typename T>
+void CircularLinkedList<T>::updateSentinel(){
+    this->sentinel->next = this->head;
+    this->sentinel->prev = this->tail;
+}
+*/
 #endif

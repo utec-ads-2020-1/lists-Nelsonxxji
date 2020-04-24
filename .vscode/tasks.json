@@ -25,6 +25,8 @@
             "args": [
                 "-g",
                 "${file}",
+                "${fileDirname}/mock/mocker.cpp",
+                "${fileDirname}/test/tester.cpp",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}"
             ],

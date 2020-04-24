@@ -57,11 +57,10 @@ void Stack<T>::push(T data)
 template <typename T>
 void Stack<T>::pop()
 {
-	if (this->empty())
+	if (!this->empty())
 	{
-		throw "Error Queue::pop(): Stack is empty";
+		--this->top;
 	}
-	--this->top;
 }
 
 template <typename T>

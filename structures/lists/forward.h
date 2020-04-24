@@ -125,12 +125,12 @@ void ForwardList<T>::pop_back()
     {
         Node<T> *temp(0);
         temp = this->head;
-        while (temp != this->tail->next)
+        while (temp->next != this->tail)
         {
             temp = temp->next;
         }
-        temp->next = nullptr;
         delete this->tail;
+        temp->next = nullptr;
         this->tail = temp;
         --this->nodes;
     }
@@ -195,6 +195,10 @@ template <typename T>
 void ForwardList<T>::sort()
 {
     this->MergeSort(&this->head);
+    this->tail = this->head;
+    while (this->tail->next){
+        this->tail = this->tail->next;
+    }
 }
 
 template <typename T>
@@ -240,12 +244,10 @@ Node<T> *ForwardList<T>::SortedMerge(Node<T> *&a, Node<T> *&b)
     Node<T> *res = nullptr;
     if (!a)
     {
-        this->tail = b;
         return b;
     }
     else if (!b)
     {
-        this->tail = a;
         return a;
     }
     if (a->data <= b->data)
