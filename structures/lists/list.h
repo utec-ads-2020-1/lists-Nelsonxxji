@@ -4,14 +4,13 @@
 #include <string>
 #include "node.h"
 
-// TODO: Implement all methods
 template <typename T>
 class List {
     protected:
         Node<T>* head;
         Node<T>* tail;
         int nodes;
-        Node<T>* sentinel;
+        //Node<T>* sentinel;
 
     public:
         List();
@@ -36,7 +35,7 @@ template <typename T>
 List<T>::List(){
     this->head = this->tail = nullptr;
     this->nodes = 0;
-    this->sentinel = new Node<T>(0);
+    //this->sentinel = new Node<T>(0);
 }
 
 template <typename T>
