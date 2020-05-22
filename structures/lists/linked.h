@@ -51,7 +51,7 @@ template <typename T>
 BidirectionalIterator<T> LinkedList<T>::end()
 {
     //return BidirectionalIterator<T>(this->sentinel->prev);
-    return BidirectionalIterator<T>(this->tail->next);
+    return BidirectionalIterator<T>(this->tail->next); //  faltó el sentinel
 }
 
 template <typename T>
@@ -117,7 +117,7 @@ void LinkedList<T>::pop_front()
 {
     if (!this->empty())
     {
-        Node<T> *temp(0);
+        Node<T> *temp(0); //  por qué el (0)?
         temp = this->head->next;
         delete this->head;
         this->head = temp;

@@ -42,14 +42,14 @@ template <typename T>
 List<T>::~List(){
     Node<T> *temp(0);
     temp = this->head;
-    while (this->nodes)
+    while (this->nodes) // Sería mejor usar head
     {
         this->head = temp->next;
-        temp->killSelf();
+        temp->killSelf(); // La idea de killself es otra, mejor usa delete simplemente
         temp = this->head;
         --this->nodes;
     }
-    delete this->head, this->tail;
+    delete this->head, this->tail;  // Esto ya no sería necesario
 }
 
 #endif

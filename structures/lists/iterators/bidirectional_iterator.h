@@ -40,13 +40,13 @@ template <typename T>
 BidirectionalIterator<T> BidirectionalIterator<T>::operator=(BidirectionalIterator<T> itr)
 {
     this->current = itr.current;
-    return itr;
+    return itr; // mejor retornar *this
 }
 
 template <typename T>
 bool BidirectionalIterator<T>::operator!=(BidirectionalIterator<T> itr)
 {
-    if (this->current == itr.current)
+    if (this->current == itr.current) // Podrías hacerlo en una línea, igual no es que esté mal
     {
         return false;
     }
@@ -63,6 +63,7 @@ BidirectionalIterator<T> BidirectionalIterator<T>::operator++()
         throw "Error BidirectionalIterator::operator++(): Iterator is NULL";
     }
     this->current = this->current->next;
+    // Faltaría retornar el iterador
 }
 
 template <typename T>
@@ -72,6 +73,7 @@ BidirectionalIterator<T> BidirectionalIterator<T>::operator--()
         throw "Error BidirectionalIterator::operator--(): Iterator is NULL";
     }
     this->current = this->current->prev;
+    // Faltaría retornar el iterador
 }
 
 template <typename T>
